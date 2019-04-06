@@ -1,56 +1,38 @@
-/*
-  Reading CO2, humidity and temperature from the SCD30
-  By: Nathan Seidle
-  SparkFun Electronics
-  Date: May 22nd, 2018
-  License: MIT. See license file for more information but you can
-  basically do whatever you want with this code.
+#include <SPS30.h>
 
-  Feel like supporting open source hardware?
-  Buy a board from SparkFun! https://www.sparkfun.com/products/14751
-
-  This example prints the current CO2 level, relative humidity, and temperature in C.
-
-  Hardware Connections:
-  If needed, attach a Qwiic Shield to your Arduino/Photon/ESP32 or other
-  Plug the device into an available Qwiic port
-  Open the serial monitor at 9600 baud to see the output
-*/
-
-#include <Wire.h>
-
-//Click here to get the library: http://librarymanager/All#SparkFun_SCD30
-#include "SparkFun_SCD30_Arduino_Library.h" 
-
-SCD30 airSensor;
+SPS30 Sensor;
 
 void setup()
 {
-  Wire.begin();
-
   Serial.begin(9600);
-  Serial.println("SCD30 Example");
 
-  airSensor.begin(); //This will cause readings to occur every two seconds
+  Sensor.begin();
 }
 
 void loop()
 {
-  if (airSensor.dataAvailable())
+  if (Sensor.dataAvailable())
   {
-    Serial.print("co2(ppm):");
-    Serial.print(airSensor.getCO2());
+    float mass_concen[4];
+    Sensor.getMass(mass_concen);
 
-    Serial.print(" temp(C):");
-    Serial.print(airSensor.getTemperature(), 1);
+    float num_concen[5];
+    Sensor.getNum(num_concen);
 
-    Serial.print(" humidity(%):");
-    Serial.print(airSensor.getHumidity(), 1);
+    char *pm[5] = {"PM0.5", "PM1.0", "PM2.5", "PM4.0", "PM10"};
 
-    Serial.println();
+    Serial.println("--- Mass Concentration ---");
+
+    for (int i = 0; i < 4; i++)
+    {
+      Serial.printf("%s: %.2f\n", pm[i + 1], mass_concen[i]);
+    }
+
+    Serial.println("--- Number Concentration ---");
+
+    for (int i = 0; i < 5; i++)
+    {
+      Serial.printf("%s: %.2f\n", pm[i], num_concen[i]);
+    }
   }
-  else
-    Serial.println("No data");
-
-  delay(1000);
 }

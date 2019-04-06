@@ -1,0 +1,40 @@
+{
+    "name": "Sensirion SPS30 Arduino Library",
+    "version": "0.1",
+    "keywords": [
+        "sensors"
+    ],
+    "description": "Library for the Sensirion SPS30 Particulate Sensor",
+    "frameworks": [
+        "arduino"
+    ],
+    "platforms": [
+        "atmelavr",
+        "atmelsam",
+        "espressif32",
+        "espressif8266",
+        "intel_arc32",
+        "microchippic32",
+        "nordicnrf51",
+        "nordicnrf52",
+        "ststm32",
+        "teensy",
+        "timsp430"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/WhyKickAmooCow/arduino-sps"
+    },
+    "homepage": null,
+    "export": {
+        "include": null,
+        "exclude": [
+            "extras",
+            "docs",
+            "tests",
+            "test",
+            "*.doxyfile",
+            "*.pdf"
+        ]
+    }
+}
