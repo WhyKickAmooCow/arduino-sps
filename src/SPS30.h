@@ -36,7 +36,6 @@
 #include <Wire.h>
 
 //The default I2C address for the SCD30 is 0x61.
-#define SCD30_ADDRESS 0x61
 #define SPS30_ADDRESS 0x69
 
 //Available commands
