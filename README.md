@@ -9,12 +9,13 @@ An Arduino library for the SPS30 particulate sensor from Sensirion. The SPS30 is
 
 This library makes reading the particulate matter concentration (μg/m³, and #/m³) easy. The pinouts are described in datasheet from Sensirion, the required configuration to use this library is:
 
-| Pin | Use   |
-| 1   | 5v    |
-| 2   | SDA   |
-| 3   | SCL   |
-| 4   | GND   |
-| 5   | GND   |
+| Pin | Use |
+| --- | --- |
+| 1   | 5v  |
+| 2   | SDA |
+| 3   | SCL |
+| 4   | GND |
+| 5   | GND |
 
 Note: The SPS30 has an automatic self-cleaning routine. Sensirion recommends at most 7 days of use between cleanings.
 
@@ -26,12 +27,17 @@ Repository Contents
 * **/src** - Source files for the library (.cpp, .h).
 * **library.properties** - General library properties for the Arduino package manager. 
 
-Where to Buy (I got my one from FutureElectronics, however I needed to buy a ZH5-1.5mm cable separately, Sparkfun advertises a nice looking one included)
+Where to Buy
 ===========================================================
+#### I got my one from FutureElectronics, however I needed to buy a ZH5-1.5mm cable separately, Sparkfun advertises a nice looking one included.
 [*Sparkfun*](https://www.sparkfun.com/products/15103)
+
 [*FutureElectronics*](https://www.futureelectronics.com/p/analog--sensors--air-quality/sps30-sensirion-9104459)
+
 [*Element14*](https://nz.element14.com/sensirion/sps30/particulate-sensor-dust-0-5um/dp/2925311?st=sps30)
+
 [*Digi-Key*](https://www.digikey.com/product-detail/en/sensirion-ag/SPS30/1649-1106-ND/9598990)
+
 [*Mouser*](https://nz.mouser.com/ProductDetail/Sensirion/SPS30?qs=sGAEpiMZZMve4%2FbfQkoj%252BB8Y4iWciyxKvMQm%2F4%252Bfm8U%3D)
 
 License Information
