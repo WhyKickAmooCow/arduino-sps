@@ -28,7 +28,7 @@ Repository Contents
 * **library.properties** - General library properties for the Arduino package manager. 
 
 Where to Buy
-===========================================================
+------------
 #### I got my one from FutureElectronics, however I needed to buy a ZH5-1.5mm cable separately, Sparkfun advertises a nice looking one included.
 [*Sparkfun*](https://www.sparkfun.com/products/15103)
 
@@ -39,6 +39,10 @@ Where to Buy
 [*Digi-Key*](https://www.digikey.com/product-detail/en/sensirion-ag/SPS30/1649-1106-ND/9598990)
 
 [*Mouser*](https://nz.mouser.com/ProductDetail/Sensirion/SPS30?qs=sGAEpiMZZMve4%2FbfQkoj%252BB8Y4iWciyxKvMQm%2F4%252Bfm8U%3D)
+
+Notice
+------
+This library is a derivative of the excellent [Sparkfun SCD30 Library](https://github.com/sparkfun/SparkFun_SCD30_Arduino_Library). It has been modified to work with the SPS30 but retains much of the original work. Thank you to the people at Sparkfun for open sourcing your library.
 
 License Information
 -------------------
