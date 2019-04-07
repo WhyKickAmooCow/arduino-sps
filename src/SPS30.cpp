@@ -1,30 +1,3 @@
-/*
-  This is a library written for the SCD30
-  SparkFun sells these at its website: www.sparkfun.com
-  Do you like this library? Help support SparkFun. Buy a board!
-  https://www.sparkfun.com/products/14751
-
-  Written by Nathan Seidle @ SparkFun Electronics, May 22nd, 2018
-
-  The SCD30 measures CO2 with accuracy of +/- 30ppm.
-
-  This library handles the initialization of the SCD30 and outputs
-  CO2 levels, relative humidty, and temperature.
-
-  https://github.com/sparkfun/SparkFun_SCD30_Arduino_Library
-
-  Development environment specifics:
-  Arduino IDE 1.8.5
-
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
 #include "SPS30.h"
 
 SPS30::SPS30(void)
@@ -67,12 +40,12 @@ boolean SPS30::begin(TwoWire &wirePort)
   return (false); //Something went wrong
 }
 
-//Returns the latest available CO2 level
+//Returns the latest available particulate mass concentration
 //If the current level has already been reported, trigger a new read
 void *SPS30::getMass(float array[4])
 {
   if (massHasBeenReported == true) //Trigger a new read
-    readMeasurement();             //Pull in new co2, humidity, and temp into global vars
+    readMeasurement();             //Pull in new mass concentration readings into global variables
 
   massHasBeenReported = true;
 
@@ -82,10 +55,12 @@ void *SPS30::getMass(float array[4])
   array[3] = massPM10;
 }
 
+//Returns the latest available particulate number concentration
+//If the current level has already been reported, trigger a new read
 void *SPS30::getNum(float array[5])
 {
   if (numberHasBeenReported == true) //Trigger a new read
-    readMeasurement();               //Pull in new co2, humidity, and temp into global vars
+    readMeasurement();               //Pull in new number concentration readings into global variables
 
   numberHasBeenReported = true;
 
@@ -97,9 +72,7 @@ void *SPS30::getNum(float array[5])
 }
 
 //Begins continuous measurements
-//Continuous measurement status is saved in non-volatile memory. When the sensor
-//is powered down while continuous measurement mode is active SCD30 will measure
-//continuously after repowering without sending the measurement command.
+//When this is called, the SPS30 will begin reporting measurements once per second
 //Returns true if successful
 boolean SPS30::beginMeasuring()
 {
@@ -107,14 +80,15 @@ boolean SPS30::beginMeasuring()
 }
 
 // Stops measurements
+// Puts the sensor into idle mode
 boolean SPS30::stopMeasuring()
 {
   return (sendCommand(COMMAND_STOP_MEASUREMENT));
 }
 
-//Sets interval between measurements
-//2 seconds to 1800 seconds (30 minutes)
-boolean SPS30::setCleaningInterval(uint16_t interval)
+//Sets interval between cleanings (seconds)
+//Default is set to 604’800 (1 week)
+boolean SPS30::setCleaningInterval(uint32_t interval)
 {
   return sendCommand(COMMAND_AUTO_CLEAN_INTERVAL, interval);
 }
@@ -134,7 +108,7 @@ boolean SPS30::dataAvailable()
   return (false);
 }
 
-//Get 60 bytes from SCD30
+//Get 60 bytes from SPS30
 //Updates global variables with floats
 //Returns true if success
 boolean SPS30::readMeasurement()
@@ -287,7 +261,7 @@ boolean SPS30::readMeasurement()
   return (true); //Success! New data available in globals.
 }
 
-//Gets two bytes from SCD30
+//Gets two bytes from SPS30
 uint16_t SPS30::readRegister(uint16_t registerAddress)
 {
   _i2cPort->beginTransmission(SPS30_ADDRESS);
@@ -320,6 +294,42 @@ boolean SPS30::sendCommand(uint16_t command, uint16_t arguments)
   _i2cPort->write(arguments >> 8);   //MSB
   _i2cPort->write(arguments & 0xFF); //LSB
   _i2cPort->write(crc);
+  if (_i2cPort->endTransmission() != 0)
+    return (false); //Sensor did not ACK
+
+  return (true);
+}
+
+//Sends a command along with arguments and CRC
+boolean sendCommand(uint16_t command, uint32_t arguments)
+{
+  // Split uint32 into an array of 4 uint8 (in big endian byte order)
+  uint8_t data[4];
+  data[0] = arguments >> 24;
+  data[1] = arguments >> 16;
+  data[2] = arguments >> 8;
+  data[3] = arguments;
+
+  // Compute the crc values of both sets of two bytes.
+  uint8_t crc[2];
+  crc[0] = computeCRC8(data, 2);
+  crc[1] = computeCRC8(data + 2, 2);
+
+  // Set pointer
+  _i2cPort->beginTransmission(SPS30_ADDRESS);
+  _i2cPort->write(command >> 8);   //MSB
+  _i2cPort->write(command & 0xFF); //LSB
+
+  // Write first 2 bytes + crc
+  _i2cPort->write(data[0]); //MSB
+  _i2cPort->write(data[1]); //LSB
+  _i2cPort->write(crc[0]);
+
+  // Write last 2 bytes + crc
+  _i2cPort->write(data[2]); //MSB
+  _i2cPort->write(data[3]); //LSB
+  _i2cPort->write(crc[1]);
+
   if (_i2cPort->endTransmission() != 0)
     return (false); //Sensor did not ACK
 

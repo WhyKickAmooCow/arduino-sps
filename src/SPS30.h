@@ -1,30 +1,3 @@
-/*
-  This is a library written for the SCD30
-  SparkFun sells these at its website: www.sparkfun.com
-  Do you like this library? Help support SparkFun. Buy a board!
-  https://www.sparkfun.com/products/14751
-
-  Written by Nathan Seidle @ SparkFun Electronics, May 22nd, 2018
-
-  The SCD30 measures CO2 with accuracy of +/- 30ppm.
-
-  This library handles the initialization of the SCD30 and outputs
-  CO2 levels, relative humidty, and temperature.
-
-  https://github.com/sparkfun/SparkFun_SCD30_Arduino_Library
-
-  Development environment specifics:
-  Arduino IDE 1.8.5
-
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
 #pragma once
 
 #if (ARDUINO >= 100)
@@ -35,7 +8,7 @@
 
 #include <Wire.h>
 
-//The default I2C address for the SCD30 is 0x61.
+//The default I2C address for the SPS30 is 0x69.
 #define SPS30_ADDRESS 0x69
 
 //Available commands
@@ -72,6 +45,7 @@ class SPS30
 	boolean readMeasurement();
 
 	boolean sendCommand(uint16_t command, uint16_t arguments);
+	boolean sendCommand(uint16_t command, uint32_t arguments);
 	boolean sendCommand(uint16_t command);
 
 	uint16_t readRegister(uint16_t registerAddress);
