@@ -64,7 +64,9 @@ class SPS30
 	void *getMass(float array[4]);
 	void *getNum(float array[5]);
 
-	void setCleaningInterval(uint16_t interval);
+	boolean setCleaningInterval(uint16_t interval);
+
+	boolean startCleaning();
 
 	boolean dataAvailable();
 	boolean readMeasurement();

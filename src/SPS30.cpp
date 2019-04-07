@@ -114,9 +114,14 @@ boolean SPS30::stopMeasuring()
 
 //Sets interval between measurements
 //2 seconds to 1800 seconds (30 minutes)
-void SPS30::setCleaningInterval(uint16_t interval)
+boolean SPS30::setCleaningInterval(uint16_t interval)
 {
-  sendCommand(COMMAND_AUTO_CLEAN_INTERVAL, interval);
+  return sendCommand(COMMAND_AUTO_CLEAN_INTERVAL, interval);
+}
+
+boolean SPS30::startCleaning()
+{
+  return sendCommand(COMMAND_START_FAN_CLEANING);
 }
 
 //Returns true when data is available
