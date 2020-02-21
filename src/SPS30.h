@@ -26,7 +26,7 @@
 
 class SPS30
 {
-  public:
+public:
 	SPS30(void);
 
 	boolean begin(TwoWire &wirePort = Wire); //By default use Wire port
@@ -37,7 +37,7 @@ class SPS30
 	void *getMass(float array[4]);
 	void *getNum(float array[5]);
 
-	boolean setCleaningInterval(uint16_t interval);
+	boolean setCleaningInterval(uint32_t interval);
 
 	boolean startCleaning();
 
@@ -52,7 +52,7 @@ class SPS30
 
 	uint8_t computeCRC8(uint8_t data[], uint8_t len);
 
-  public:
+public:
 	//Variables
 	TwoWire *_i2cPort; //The generic connection to user's chosen I2C hardware
 

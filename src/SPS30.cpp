@@ -76,7 +76,7 @@ void *SPS30::getNum(float array[5])
 //Returns true if successful
 boolean SPS30::beginMeasuring()
 {
-  return (sendCommand(COMMAND_START_MEASUREMENT, 0x0300));
+  return (sendCommand(COMMAND_START_MEASUREMENT, (uint16_t)0x0300));
 }
 
 // Stops measurements
@@ -301,7 +301,7 @@ boolean SPS30::sendCommand(uint16_t command, uint16_t arguments)
 }
 
 //Sends a command along with arguments and CRC
-boolean sendCommand(uint16_t command, uint32_t arguments)
+boolean SPS30::sendCommand(uint16_t command, uint32_t arguments)
 {
   // Split uint32 into an array of 4 uint8 (in big endian byte order)
   uint8_t data[4];
